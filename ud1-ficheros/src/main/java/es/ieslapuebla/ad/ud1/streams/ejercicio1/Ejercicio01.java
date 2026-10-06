@@ -1,9 +1,6 @@
 package es.ieslapuebla.ad.ud1.streams.ejercicio1;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -13,11 +10,11 @@ public class Ejercicio01 {
     public static Scanner sc = new Scanner(System.in);
 
     static void main(String[] args) {
-        mostrarMenu();
         int opcion = 0;
-
-        System.out.println("Elige una opción:");
         do {
+            mostrarMenu();
+
+            System.out.println("Elige una opción:");
             try{
                 opcion = sc.nextInt();
             } catch(InputMismatchException e) {
@@ -45,11 +42,10 @@ public class Ejercicio01 {
                     eliminarAlumno();
                     break;
                 case 6:
+                    System.out.println("Saliendo del programa...");
                     break;
             }
-
         } while (opcion != 6);
-
         sc.close();
     }
 
@@ -60,18 +56,27 @@ public class Ejercicio01 {
         String nombre = sc.nextLine();
         System.out.print("Introduce la edad del alumno: ");
         int edad = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Introduce el correo electrónico: ");
+        String email = sc.nextLine();
+        System.out.print("Introduce número de teléfono: ");
+        String telefono = sc.nextLine();
+
         try (PrintWriter pw = new PrintWriter(
-                new FileWriter(f, StandardCharsets.UTF_8))) {
-            pw.printf("%s#%d",nombre,edad);
+                new FileWriter(f, StandardCharsets.UTF_8, true))) {
+            pw.printf("%s#%d#%s#%s\n",nombre,edad, email, telefono);
             System.out.println("El alumno se ha registrado correctamente.");
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error y el registro no se ha guardado.");
         }
-
     }
 
     public static void mostrarDatos() {
+        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
 
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error y el registro no se ha borrado.");
+        }
     }
 
     public static String buscarMayores(int edad) {
@@ -95,4 +100,5 @@ public class Ejercicio01 {
         System.out.printf("\t5.Eliminar alumno.\n");
         System.out.printf("\t6.Salir.\n");
     }
+
 }
