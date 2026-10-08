@@ -33,10 +33,10 @@ public class Ejercicio01 {
                     mostrarDatos();
                     break;
                 case 3:
-                    System.out.println(buscarMayores(30));
+                    buscarMayores(30);
                     break;
                 case 4:
-                    System.out.println(buscarNombre("Juan"));
+                    buscarNombre("Juan");
                     break;
                 case 5:
                     eliminarAlumno();
@@ -55,7 +55,7 @@ public class Ejercicio01 {
         System.out.print("Introduce el nombre del alumno: ");
         String nombre = sc.nextLine();
         System.out.print("Introduce la edad del alumno: ");
-        int edad = sc.nextInt();
+        int edad = pedirEntero();
         sc.nextLine();
         System.out.print("Introduce el correo electrónico: ");
         String email = sc.nextLine();
@@ -72,23 +72,47 @@ public class Ejercicio01 {
     }
 
     public static void mostrarDatos() {
+        String alumno;
         try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-
+            while((alumno = br.readLine()) != null){
+                String[] alumnoSplit = alumno.split("#");
+                System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+            }
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error y el registro no se ha borrado.");
+            System.out.println("Ha ocurrido un error y el registro no .");
         }
     }
 
-    public static String buscarMayores(int edad) {
-        return "";
+    public static void buscarMayores(int edad) {
+        String alumno;
+        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            while((alumno = br.readLine()) != null){
+                String[] alumnoSplit = alumno.split("#");
+                if(Integer.parseInt(alumnoSplit[1]) >= edad){
+                    System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error y el registro no .");
+        }
     }
 
-    public static String buscarNombre(String nombre) {
-        return "";
+    public static void buscarNombre(String nombre) {
+        String alumno;
+        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            while((alumno = br.readLine()) != null){
+                String[] alumnoSplit = alumno.split("#");
+                if(alumnoSplit[0].equals(nombre)){
+                    System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error y el registro no .");
+        }
     }
 
     public static void eliminarAlumno() {
-
+        
     }
 
     public static void mostrarMenu() {
@@ -101,4 +125,15 @@ public class Ejercicio01 {
         System.out.printf("\t6.Salir.\n");
     }
 
+    public static int pedirEntero() {
+        int num = 0;
+        boolean esCorrecto = false;
+        try {
+            num = sc.nextInt();
+            esCorrecto = true;
+        } catch (InputMismatchException e) {
+            System.out.println("No se ha introducido un entero. Inténtalo de nuevo: ");
+        }
+        return num;
+    }
 }
