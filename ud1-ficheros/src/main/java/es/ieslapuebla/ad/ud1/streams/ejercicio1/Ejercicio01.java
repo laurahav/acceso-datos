@@ -14,7 +14,7 @@ public class Ejercicio01 {
         do {
             mostrarMenu();
 
-            System.out.println("Elige una opción:");
+            System.out.print("Elige una opción:\n");
             try{
                 opcion = sc.nextInt();
             } catch(InputMismatchException e) {
@@ -42,7 +42,7 @@ public class Ejercicio01 {
                     eliminarAlumno();
                     break;
                 case 6:
-                    System.out.println("Saliendo del programa...");
+                    System.out.print("Saliendo del programa...");
                     break;
             }
         } while (opcion != 6);
@@ -112,28 +112,52 @@ public class Ejercicio01 {
     }
 
     public static void eliminarAlumno() {
-        
+        System.out.print("Introduce el nombre del alumno que quieres borrar: ");
+        sc.nextLine();
+        String nombre = sc.nextLine();
+        File nuevoArchivo = new File("src/main/java/es/ieslapuebla/ad/ud1/streams/ejercicio1/datos_nuevo.txt");
+        String alumno;
+        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
+            while((alumno = br.readLine()) != null){
+                String[] alumnoSplit = alumno.split("#");
+                if(!alumnoSplit[0].equals(nombre)){
+                    try (PrintWriter pw = new PrintWriter(
+                            new FileWriter(nuevoArchivo, StandardCharsets.UTF_8, true))) {
+                        pw.println(alumno);
+                    } catch (IOException e) {
+                        e.getStackTrace();
+                    }
+                }
+            }
+            System.out.println("El registro se ha borrado correctamente.");
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error y el registro no se ha borrado.");
+        }
+        f.delete();
+        nuevoArchivo.renameTo(f);
     }
 
     public static void mostrarMenu() {
-        System.out.println("Menú:");
-        System.out.printf("\t1.Registrar el alumno.\n");
-        System.out.printf("\t2.Mostrar datos del fichero.\n");
-        System.out.printf("\t3.Ejecutar consulta mayores de 30.\n");
-        System.out.printf("\t4.Ejecutar consulta alumnos Juan.\n");
-        System.out.printf("\t5.Eliminar alumno.\n");
-        System.out.printf("\t6.Salir.\n");
+        System.out.print("Menú:\n");
+        System.out.print("\t1.Registrar el alumno.\n");
+        System.out.print("\t2.Mostrar datos del fichero.\n");
+        System.out.print("\t3.Ejecutar consulta mayores de 30.\n");
+        System.out.print("\t4.Ejecutar consulta alumnos Juan.\n");
+        System.out.print("\t5.Eliminar alumno.\n");
+        System.out.print("\t6.Salir.\n");
     }
 
     public static int pedirEntero() {
         int num = 0;
         boolean esCorrecto = false;
-        try {
-            num = sc.nextInt();
-            esCorrecto = true;
-        } catch (InputMismatchException e) {
-            System.out.println("No se ha introducido un entero. Inténtalo de nuevo: ");
-        }
+        do {
+            try {
+                num = sc.nextInt();
+                esCorrecto = true;
+            } catch (InputMismatchException e) {
+                System.out.println("No se ha introducido un entero. Inténtalo de nuevo: ");
+            }
+        } while (!esCorrecto);
         return num;
     }
 }
