@@ -11,6 +11,8 @@ necesitas para no borrar una carpeta antes que su contenido.
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -34,7 +36,12 @@ public class Ejercicio7 {
         } while (!esValido);
 
         try(Stream<Path> carpeta = Files.walk(directorio)) {
-
+            Stream<Path> carpetaOrdenada  = carpeta.sorted(Comparator.reverseOrder());
+            Iterator<Path> it = carpetaOrdenada.iterator();
+            while(it.hasNext()) {
+                Path p = it.next();
+                Files.deleteIfExists(p);
+            }
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error: " + e.getMessage());
         }
