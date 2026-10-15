@@ -6,7 +6,6 @@ dentro de tu carpeta de usuario) y, dentro de él, un subdirectorio llamado "EJE
 */
 
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -15,11 +14,8 @@ public class Ejercicio5 {
         try {
             Files.createDirectories(Path.of("C:/Users/laura/UD1/EJEMPLO"));
             System.out.println("Los directorios se han creado correctamente.");
-        } catch (UnsupportedOperationException e) {
-
-        } catch (FileAlreadyExistsException e) {
         } catch (IOException e) {
-
+            System.out.println("Ha ocurrido un error: " + e.getMessage());
         }
     }
 }
