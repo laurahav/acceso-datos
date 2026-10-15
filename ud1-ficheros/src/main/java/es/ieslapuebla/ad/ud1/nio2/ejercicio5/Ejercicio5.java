@@ -5,5 +5,21 @@ package es.ieslapuebla.ad.ud1.nio2.ejercicio5;
 dentro de tu carpeta de usuario) y, dentro de él, un subdirectorio llamado "EJEMPLO".
 */
 
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Ejercicio5 {
+    static void main(String[] args) {
+        try {
+            Files.createDirectories(Path.of("C:/Users/laura/UD1/EJEMPLO"));
+            System.out.println("Los directorios se han creado correctamente.");
+        } catch (UnsupportedOperationException e) {
+
+        } catch (FileAlreadyExistsException e) {
+        } catch (IOException e) {
+
+        }
+    }
 }
