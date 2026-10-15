@@ -14,17 +14,19 @@ import java.util.Scanner;
 public class Ejercicio2 {
     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String s = sc.nextLine();
-        Path directorio = Path.of(s);
+        System.out.println("Introduce el path a comprobar: ");
+        Path directorio = Path.of(sc.nextLine());
+
         if(!Files.exists(directorio)) {
-            System.out.println("El path no existe");
+            System.out.println("El path no existe.");
         } else {
             if(!Files.isReadable(directorio)) {
-                System.out.println("El path NO se puede leer.");
+                System.out.println("El path existe, pero NO se puede leer.");
             } else {
-                System.out.println("El path se puede leer.");
+                System.out.println("El path existe y se puede leer.");
             }
         }
+
         sc.close();
     }
 }

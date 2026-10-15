@@ -12,11 +12,17 @@ import java.util.Scanner;
 
 public class Ejercicio6 {
     static void main(String[] args) {
-        Path archivo = Path.of("C:/Users/laura/UD1/EJEMPLO/archivo.txt");
+        Scanner sc = new Scanner(System.in);
+        Path archivo;
+
+        do {
+            System.out.println("Introduce el path de un archivo:");
+            archivo = Path.of(sc.nextLine());
+        } while (!Files.isRegularFile(archivo));
+
         try {
-            if(Files.deleteIfExists(archivo)) {
-                System.out.println("Se ha borrado el archivo correctamente.");
-            }
+            Files.deleteIfExists(archivo);
+            System.out.println("Se ha borrado el archivo correctamente.");
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error: " + e.getMessage());
         }

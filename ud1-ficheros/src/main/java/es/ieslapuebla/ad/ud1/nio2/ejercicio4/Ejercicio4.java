@@ -18,28 +18,15 @@ import java.util.stream.Stream;
 public class Ejercicio4 {
     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        boolean esValido = false;
         Path directorio;
 
-        System.out.println("Introduce el path de un directorio: ");
         do {
-            String path = sc.nextLine();
-            directorio = Path.of(path);
-            if(!Files.exists(directorio)){
-                System.out.println("El path no existe, introduce un directorio válido: ");
-            }else if (Files.isRegularFile(directorio)) {
-                System.out.println("El path introducido no es un directorio, inténtalo de nuevo: ");
-            } else {
-                esValido = true;
-            }
-        } while (!esValido);
+            System.out.println("Introduce el path de un directorio:");
+            directorio = Path.of(sc.nextLine());
+        } while (!Files.isDirectory(directorio));
 
         try(Stream<Path> rutas = Files.list(directorio)) {
-            Iterator<Path> it = rutas.iterator();
-            while(it.hasNext()) {
-                Path p = it.next();
-                System.out.printf("%s -> %s \n", p.getFileName(), Files.isDirectory(p) ? "directorio" : "fichero");
-            }
+            rutas.forEach(p -> System.out.printf("%s -> %s \n", p.getFileName(), Files.isDirectory(p) ? "directorio" : "fichero"));
         } catch (UncheckedIOException e) {
             System.out.println("Ha ocurrido un error: " + e.getMessage());
         } catch (IOException e) {

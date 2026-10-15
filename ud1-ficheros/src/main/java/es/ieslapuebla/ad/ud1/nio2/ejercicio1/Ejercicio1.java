@@ -15,14 +15,13 @@ import java.util.stream.Stream;
 public class Ejercicio1 {
     static void main(String[] args) {
         Path directorioActual = Path.of(".");
-        try (Stream<Path> rutas = Files.walk(directorioActual)) {
-            Iterator<Path> it = rutas.iterator();
-            while (it.hasNext()) {
-                Path p = it.next();
-                if (Files.isDirectory(p)) {
-                    System.out.println(p);
-                }
-            }
+        try (Stream<Path> rutas = Files.list(directorioActual)) {
+            rutas.forEach(path -> System.out.println(path.getFileName()));
+//            Iterator<Path> it = rutas.iterator();
+//            while (it.hasNext()) {
+//                Path p = it.next();
+//                System.out.println(p.getFileName().toString());
+//            }
         } catch (UncheckedIOException e) {
             System.out.println("Error al recorrer el árbol de carpetas: " + e.getMessage());
         } catch (IOException e) {

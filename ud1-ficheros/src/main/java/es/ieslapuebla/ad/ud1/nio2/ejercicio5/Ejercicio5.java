@@ -8,11 +8,20 @@ dentro de tu carpeta de usuario) y, dentro de él, un subdirectorio llamado "EJE
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 public class Ejercicio5 {
     static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Path directorio;
+
+        do {
+            System.out.println("Introduce el path de un directorio:");
+            directorio = Path.of(sc.nextLine());
+        } while (!Files.isDirectory(directorio));
+
         try {
-            Files.createDirectories(Path.of("C:/Users/laura/UD1/EJEMPLO"));
+            Files.createDirectories(directorio);
             System.out.println("Los directorios se han creado correctamente.");
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error: " + e.getMessage());

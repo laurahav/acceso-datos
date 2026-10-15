@@ -9,6 +9,7 @@ necesitas para no borrar una carpeta antes que su contenido.
 */
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -37,11 +38,15 @@ public class Ejercicio7 {
 
         try(Stream<Path> carpeta = Files.walk(directorio)) {
             Stream<Path> carpetaOrdenada  = carpeta.sorted(Comparator.reverseOrder());
-            Iterator<Path> it = carpetaOrdenada.iterator();
-            while(it.hasNext()) {
-                Path p = it.next();
-                Files.deleteIfExists(p);
-            }
+            carpetaOrdenada.forEach(path ->  {
+                try{
+                    Files.deleteIfExists(path);
+                } catch (IOException e) {
+                    System.out.println("Ha ocurrido un error: " + e.getMessage());
+                }
+            });
+        } catch (UncheckedIOException e) {
+            System.out.println("Error de E/S durante el recorrifo: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error: " + e.getMessage());
         }
