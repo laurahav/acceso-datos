@@ -1,12 +1,16 @@
 package es.ieslapuebla.ad.ud1.streamsv2.ejercicio1;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
+
 public class Ejercicio01 {
-    public static File f = new File("src/main/java/es/ieslapuebla/ad/ud1/streams/ejercicio1/datos.txt");
+    public static Path f = Path.of("src/main/java/es/ieslapuebla/ad/ud1/streamsv2/ejercicio1/datos.txt");
     public static Scanner sc = new Scanner(System.in);
 
     static void main(String[] args) {
@@ -30,16 +34,16 @@ public class Ejercicio01 {
                     registrarAlumno();
                     break;
                 case 2:
-                    mostrarDatos();
+                    //mostrarDatos();
                     break;
                 case 3:
-                    buscarMayores(30);
+                    //buscarMayores(30);
                     break;
                 case 4:
-                    buscarNombre("Juan");
+                    //buscarNombre("Juan");
                     break;
                 case 5:
-                    eliminarAlumno();
+                    //eliminarAlumno();
                     break;
                 case 6:
                     System.out.print("Saliendo del programa...");
@@ -62,21 +66,23 @@ public class Ejercicio01 {
         System.out.print("Introduce número de teléfono: ");
         String telefono = sc.nextLine();
 
-        try (PrintWriter pw = new PrintWriter(
-                new FileWriter(f, StandardCharsets.UTF_8, true))) {
-            pw.printf("%s#%d#%s#%s\n",nombre,edad, email, telefono);
-            System.out.println("El alumno se ha registrado correctamente.");
+        String alumno = nombre + "#" + edad + "#" + email + "#" + telefono + "\n";
+
+        try {
+            Files.writeString(f,alumno  , StandardOpenOption.APPEND);
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error y el registro no se ha guardado.");
+            System.out.println("Ha ocurrido un error: " + e.getMessage());
         }
     }
 
     public static void mostrarDatos() {
-        String alumno;
-        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            while((alumno = br.readLine()) != null){
-                String[] alumnoSplit = alumno.split("#");
-                System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+        try{
+            List<String> alumnos = Files.readAllLines(f, StandardCharsets.UTF_8);
+            int i = 1;
+            for(String alumno : alumnos) {
+                String[] camposAlumno = alumno.split("#");
+                System.out.printf("Alumno %d: \nNombre: %s\nEdad: %s\nEmail: %s\nTeléfono: %s\n", i, camposAlumno[0], camposAlumno[1], camposAlumno[2],camposAlumno[3]);
+                i++;
             }
         } catch (IOException e) {
             System.out.println("Ha ocurrido un error y el registro no .");
@@ -84,12 +90,14 @@ public class Ejercicio01 {
     }
 
     public static void buscarMayores(int edad) {
-        String alumno;
-        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            while((alumno = br.readLine()) != null){
-                String[] alumnoSplit = alumno.split("#");
-                if(Integer.parseInt(alumnoSplit[1]) >= edad){
-                    System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+        try{
+            List<String> alumnos = Files.readAllLines(f, StandardCharsets.UTF_8);
+            int i = 1;
+            for(String alumno : alumnos) {
+                String[] camposAlumno = alumno.split("#");
+                if(camposAlumno[1].equals(String.valueOf(edad))){
+                    System.out.printf("Alumno %d: \nNombre: %s\nEdad: %s\nEmail: %s\nTeléfono: %s\n", i, camposAlumno[0], camposAlumno[1], camposAlumno[2],camposAlumno[3]);
+                    i++;
                 }
             }
         } catch (IOException e) {
@@ -98,12 +106,14 @@ public class Ejercicio01 {
     }
 
     public static void buscarNombre(String nombre) {
-        String alumno;
-        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            while((alumno = br.readLine()) != null){
-                String[] alumnoSplit = alumno.split("#");
-                if(alumnoSplit[0].equals(nombre)){
-                    System.out.printf("Nombre: %s \nEdad: %d \nEmail: %s \nTeléfono: %s\n\n", alumnoSplit[0], Integer.parseInt(alumnoSplit[1]), alumnoSplit[2], alumnoSplit[3]);
+        try{
+            List<String> alumnos = Files.readAllLines(f, StandardCharsets.UTF_8);
+            int i = 1;
+            for(String alumno : alumnos) {
+                String[] camposAlumno = alumno.split("#");
+                if(camposAlumno[0].equals(nombre)){
+                    System.out.printf("Alumno %d: \nNombre: %s\nEdad: %s\nEmail: %s\nTeléfono: %s\n", i, camposAlumno[0], camposAlumno[1], camposAlumno[2],camposAlumno[3]);
+                    i++;
                 }
             }
         } catch (IOException e) {
@@ -115,26 +125,24 @@ public class Ejercicio01 {
         System.out.print("Introduce el nombre del alumno que quieres borrar: ");
         sc.nextLine();
         String nombre = sc.nextLine();
-        File nuevoArchivo = new File("src/main/java/es/ieslapuebla/ad/ud1/streams/ejercicio1/datos_nuevo.txt");
-        String alumno;
-        try(BufferedReader br = new BufferedReader(new FileReader(f, StandardCharsets.UTF_8))){
-            while((alumno = br.readLine()) != null){
-                String[] alumnoSplit = alumno.split("#");
-                if(!alumnoSplit[0].equals(nombre)){
-                    try (PrintWriter pw = new PrintWriter(
-                            new FileWriter(nuevoArchivo, StandardCharsets.UTF_8, true))) {
-                        pw.println(alumno);
-                    } catch (IOException e) {
-                        e.getStackTrace();
-                    }
+        Path nuevoArchivo = Path.of("src/main/java/es/ieslapuebla/ad/ud1/streamsv2/ejercicio1/datos_nuevo.txt");
+        try{
+            List<String> alumnos = Files.readAllLines(f, StandardCharsets.UTF_8);
+            int i = 1;
+            for(String alumno : alumnos) {
+                String[] camposAlumno = alumno.split("#");
+                if(!camposAlumno[0].equals(nombre)){
+                    Files.writeString(nuevoArchivo, alumno,StandardOpenOption.APPEND);
                 }
             }
-            System.out.println("El registro se ha borrado correctamente.");
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error y el registro no se ha borrado.");
+            System.out.println("Ha ocurrido un error y el registro no .");
         }
-        f.delete();
-        nuevoArchivo.renameTo(f);
+        try {
+            Files.move(nuevoArchivo,f, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error: " + e.getMessage());
+        }
     }
 
     public static void mostrarMenu() {
