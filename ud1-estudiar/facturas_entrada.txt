@@ -1,0 +1,30 @@
+F001::Empresa S.A.::Material de oficina::150.50
+F002::Juan Pérez::Licencia Software::299.00
+F003::Comercial Sur::Servicios de consultoría::1200.00
+F004::Empresa S.A.::Mantenimiento servidores::450.75
+F005::María Gómez::Publicidad redes sociales::85.00
+F006::Tecnologías SL::Desarrollo Web::950.00
+F007::Pedro Ruiz::Soporte técnico::inválido
+F008::Construcciones S.L.::Materiales de obra::3400.20
+F009::Ana Belén::Diseño gráfico::50.00
+F010::Logística Global::Transporte y envío::120.50
+F011::Carlos Luján::Asesoría fiscal::200.00
+F012::Oficina Sur::Falta un campo::
+F013::Electrodomésticos S.A.::Reparación de aire acondicionado::430.10
+F014::Lucía Méndez::Traducción de textos::75.50
+F015::Inversiones SL::Auditoría contable::2500.00
+F016::Miguel Ángel::Formación online::ABC123
+F017::Restaurante El Faro::Catering eventos::890.00
+F018::Farmacia Central::Suministro de EPIs::310.40
+F019::Sistemas Informáticos::Licencias de antivirus::540.00
+F020::Cliente Mal Formado - Faltan separadores
+F021::Talleres Mecánicos::Reparación de flota::620.80
+F022::Laura Gómez::Gestión de redes::150.00
+F023::Consultora Norte::Estudio de mercado::1800.00
+F024::Pinturas SL::Suministro de pintura::270.30
+F025::Inmobiliaria del Sol::Cartelería::importe_raro
+F026::Zapatería Pepe::Reparación de escaparate::95.00
+F027::Panadería Artesanal::Mantenimiento de hornos::210.00
+F028::Clínica Dental::Material sanitario::460.00
+F029::Gym Fuerza::Equipamiento deportivo::1500.00
+F030::Librería Central::Libros de texto::310.00

@@ -1,5 +1,8 @@
 package es.ieslapuebla.ejercicio3;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -14,16 +17,17 @@ controlando la persistencia acumulativa de objetos.
 4. Salir.
 */
 public class Ejercicio3 {
-    static List<Elemento> elementos = new ArrayList<Elemento>();
-
     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int opcion = leerEntero(mostrarMenu() + System.lineSeparator() + "Elige una opción: ", sc);
+        Path fichero = Path.of("catalogo.dat");
+
+        int opcion = 0;
         do {
+            opcion = leerEntero(mostrarMenu() + System.lineSeparator() + "Elige una opción: ", sc);
             switch (opcion) {
-                case 1 -> addElemento(sc);
-                case 2 -> listElementos();
-                case 3 -> modifyElemento(sc);
+                case 1 -> addElemento(sc, fichero);
+                case 2 -> listElementos(fichero);
+                //case 3 -> modifyElemento(sc);
                 case 4 -> System.out.println("Saliendo...");
                 default -> System.out.println("ERROR. Introduce una opción válida.");
             }
@@ -31,15 +35,58 @@ public class Ejercicio3 {
         sc.close();
     }
 
-    public static void addElemento(Scanner sc) {
-        if
-        System.out.println("Elemento añadido correctamente.");
+    public static void addElemento(Scanner sc, Path fichero) {
+        List<Elemento> elementos = cargarElementos(fichero);
+        Elemento e = leerElemento(sc);
+        elementos.add(e);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichero.toFile()))){
+            for(Elemento ele : elementos) {
+                oos.writeObject(ele);
+            }
+            System.out.println("   > Elemento añadido.");
+        } catch (IOException ex) {
+            System.out.println("Ha ocurrido un error: " + ex.getMessage());
+        }
     }
 
-    public static void listElementos() {
-        for (Elemento e : elementos) {
-            System.out.println(e);
+    public static List<Elemento> cargarElementos(Path fichero) {
+        List<Elemento> elementos = new ArrayList<>();
+        if (!Files.exists(fichero)) {
+            return elementos; // Si no existe el archivo aún, devolvemos lista vacía
         }
+
+        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(fichero))) {
+            while (true) {
+                Elemento producto = (Elemento) ois.readObject();
+                elementos.add(producto);
+            }
+        } catch (EOFException e) {
+            // Fin de fichero normal, no hacemos nada
+        } catch (Exception e) {
+            // Capturamos cualquier otro fallo de lectura
+        }
+        return elementos;
+    }
+
+    public static void listElementos(Path fichero) {
+        List<Elemento> elementos = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(fichero))) {
+            while (true) {
+                Elemento producto = (Elemento) ois.readObject();
+                elementos.add(producto);
+            }
+        } catch (EOFException e) {
+            e.getStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: archivo catalogo.dat no encontrado.");
+        } catch (IOException e) {
+            System.out.println("Error: fallo en el acceso al archivo: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error: el contenido del archivo no se corresponde con lo que esperaba.");
+        } catch (ClassCastException e) {
+            System.out.println("Error: el archivo no contiene un Producto.");
+        }
+        elementos.forEach(elemento -> System.out.println(elemento.toString()));
     }
 
     public static void modifyElemento() {
@@ -54,7 +101,7 @@ public class Ejercicio3 {
         System.out.println("¿Está activo el elemento? (true/FALSE): ");
         String activoString = sc.nextLine();
         boolean activo = false;
-        if (activoString == "true") {
+        if (!activoString.isBlank() && activoString== "true") {
             activo = true;
         } else {
             activo = false;
@@ -78,10 +125,10 @@ public class Ejercicio3 {
             try {
                 numero = sc.nextInt();
                 esNum = true;
-                sc.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("ERROR. Debes introducir un número entero.");
             }
+            sc.nextLine();
         } while (!esNum);
         return numero;
     }
@@ -94,10 +141,10 @@ public class Ejercicio3 {
             try {
                 numero = sc.nextDouble();
                 esNum = true;
-                sc.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("ERROR. Debes introducir un número decimal.");
             }
+            sc.nextLine();
         } while (!esNum);
         return numero;
     }
