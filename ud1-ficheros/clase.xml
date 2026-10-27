@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Clase>
+    <Alumno curso="2DAM">
+        <Nombre>Atenea</Nombre>
+        <Edad>18</Edad>
+    </Alumno>
+    <Alumno curso="2DAM">
+        <Nombre>Laura</Nombre>
+        <Edad>30</Edad>
+    </Alumno>
+    <Alumno curso="2DAM">
+        <Nombre>Ouail</Nombre>
+        <Edad>20</Edad>
+    </Alumno>
+</Clase>

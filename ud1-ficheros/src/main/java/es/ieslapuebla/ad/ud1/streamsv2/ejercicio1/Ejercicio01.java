@@ -8,10 +8,9 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Ejercicio01 {
     public static Path f = Path.of("src/main/java/es/ieslapuebla/ad/ud1/streamsv2/ejercicio1/datos.txt");
-    public static Scanner sc = new Scanner(System.in);
+    public static final Scanner sc = new Scanner(System.in);
 
     static void main(String[] args) {
         int opcion = 0;
@@ -34,16 +33,16 @@ public class Ejercicio01 {
                     registrarAlumno();
                     break;
                 case 2:
-                    //mostrarDatos();
+                    mostrarDatos();
                     break;
                 case 3:
-                    //buscarMayores(30);
+                    buscarMayores(30);
                     break;
                 case 4:
-                    //buscarNombre("Juan");
+                    buscarNombre("Juan");
                     break;
                 case 5:
-                    //eliminarAlumno();
+                    eliminarAlumno();
                     break;
                 case 6:
                     System.out.print("Saliendo del programa...");
@@ -81,7 +80,7 @@ public class Ejercicio01 {
             int i = 1;
             for(String alumno : alumnos) {
                 String[] camposAlumno = alumno.split("#");
-                System.out.printf("Alumno %d: \nNombre: %s\nEdad: %s\nEmail: %s\nTeléfono: %s\n", i, camposAlumno[0], camposAlumno[1], camposAlumno[2],camposAlumno[3]);
+                System.out.printf("---Alumno %d--- \n>Nombre: %s\n>Edad: %s\n>Email: %s\n>Teléfono: %s\n", i, camposAlumno[0], camposAlumno[1], camposAlumno[2],camposAlumno[3]);
                 i++;
             }
         } catch (IOException e) {

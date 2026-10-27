@@ -1,20 +1,22 @@
 package es.ieslapuebla.ad.ud1.streamsv2.ejercicio4;
 
-import es.ieslapuebla.ad.ud1.streams.ejercicio2.Producto;
+import es.ieslapuebla.ad.ud1.streamsv2.ejercicio2.Producto;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class BinarioProductosToConsola {
 
     static void main(String[] args) {
-        File f = new File("productos.dat");
+        Path p = Path.of("productos.dat");
         ArrayList<Producto> productos = new ArrayList<>();
 
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
+        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(p))) {
             while (true) {
-                Producto p = (Producto) ois.readObject();
-                productos.add(p);
+                Producto producto = (Producto) ois.readObject();
+                productos.add(producto);
             }
         } catch (EOFException e) {
             e.getStackTrace();
@@ -32,8 +34,8 @@ public class BinarioProductosToConsola {
         System.out.println("------------------------------");
         System.out.printf("Total de productos: %d\n", productos.size());
         int i = 1;
-        for(Producto p : productos) {
-            System.out.printf("PRODUCTO %d: %s\n", i, p.toString());
+        for(Producto producto : productos) {
+            System.out.printf("PRODUCTO %d: %s\n", i, producto.toString());
             i++;
         }
     }

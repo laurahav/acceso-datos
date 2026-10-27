@@ -1,0 +1,14 @@
+{
+  "Libros" : [ {
+    "autor" : "Nikolai Gogol",
+    "publicado_en" : 1840
+  }, {
+    "titulo" : "El Sanador de Caballos",
+    "autor" : "Gonzalo Giner",
+    "publicado_en" : 2008
+  }, {
+    "titulo" : "El Nombre de la Rosa",
+    "autor" : "Umberto Eco",
+    "publicado_en" : 1981
+  } ]
+}
