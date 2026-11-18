@@ -24,7 +24,7 @@ public class Practica1 {
 
     static void mostrarPersonajes() {
         try(Connection con = ConexionBD.getConnection()) {
-            String sql = "SELECT * FROM personaje";
+            String sql = "SELECT * FROM personaje ORDER BY id_personaje";
             try(PreparedStatement ps = con.prepareStatement(sql)) {
                 try(ResultSet rs = ps.executeQuery()) {
                     System.out.println("-------RESULTADO-------");
@@ -46,7 +46,7 @@ public class Practica1 {
 
     static void mostrarNaves() {
         try(Connection con = ConexionBD.getConnection()) {
-            String sql = "SELECT * FROM nave";
+            String sql = "SELECT * FROM nave ORDER BY id_nave";
             try(PreparedStatement ps = con.prepareStatement(sql)) {
                 try(ResultSet rs = ps.executeQuery()) {
                     System.out.println("-------RESULTADO-------");
@@ -98,7 +98,9 @@ public class Practica1 {
                 ps.setLong(2, id);
 
                 int registrosAfectados = ps.executeUpdate();
-                if (registrosAfectados == 0) {
+                if (registrosAfectados > 0) {
+                    System.out.printf("La nave con el ID %d ha actualizado su número de motores a %d.", id, motores);
+                } else {
                     System.out.println("No existe ninguna nave con el ID " + id + ", por tanto, no se ha actualizado el número de motores.");
                 }
             }
@@ -111,7 +113,7 @@ public class Practica1 {
         int anio = ES.leeEntero("Introduzca el año que quieras consultar: ");
         LocalDate fecha = LocalDate.of(anio,1,1);
         try(Connection con = ConexionBD.getConnection()) {
-            String sql = "SELECT nombre FROM personaje a JOIN pilota b ON a.id_personaje = b.id_personaje WHERE fecha < ?";
+            String sql = "SELECT DISTINCT nombre FROM personaje a JOIN pilota b ON a.id_personaje = b.id_personaje WHERE fecha < ? ORDER BY a.nombre";
             try(PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setObject(1, fecha);
                 try(ResultSet rs = ps.executeQuery()) {
